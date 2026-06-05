@@ -1,1 +1,119 @@
-https://discord.gg/dzh5YTmNZb
+-- Roblox Key System UI Script (Centered Window Only)
+-- Place this in a LocalScript inside StarterPlayerScripts or StarterGui
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "KeySystemUI"
+screenGui.ResetOnSpawn = false
+screenGui.DisplayOrder = 999999
+screenGui.Parent = PlayerGui
+
+-- Main Container (Center Box - Only in the middle)
+local mainFrame = Instance.new("Frame")
+mainFrame.Name = "MainFrame"
+mainFrame.Size = UDim2.new(0, 420, 0, 280)
+mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 35) -- Dark modern theme
+mainFrame.BorderSizePixel = 0
+mainFrame.Active = true -- Prevents clicking through the frame
+mainFrame.Draggable = false -- Strictly prevents dragging/moving
+mainFrame.Parent = screenGui
+
+-- UI Corner for modern rounded look
+local uiCorner = Instance.new("UICorner")
+uiCorner.CornerRadius = UDim.new(0, 12)
+uiCorner.Parent = mainFrame
+
+-- Title Label
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Name = "Title"
+titleLabel.Size = UDim2.new(1, 0, 0, 50)
+titleLabel.Position = UDim2.new(0, 0, 0, 10)
+titleLabel.BackgroundTransparency = 1
+titleLabel.Text = "KEY SYSTEM"
+titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+titleLabel.Font = Enum.Font.GothamBold
+titleLabel.TextSize = 24
+titleLabel.Parent = mainFrame
+
+-- Instruction Label
+local infoLabel = Instance.new("TextLabel")
+infoLabel.Name = "Info"
+infoLabel.Size = UDim2.new(0, 360, 0, 60)
+infoLabel.Position = UDim2.new(0.5, 0, 0, 70)
+infoLabel.AnchorPoint = Vector2.new(0.5, 0)
+infoLabel.BackgroundTransparency = 1
+infoLabel.Text = "Please join our Discord server to get the key to unlock the script."
+infoLabel.TextColor3 = Color3.fromRGB(180, 180, 190)
+infoLabel.Font = Enum.Font.Gotham
+infoLabel.TextSize = 16
+infoLabel.TextWrapped = true
+infoLabel.Parent = mainFrame
+
+-- TextBox for Key Input
+local keyInput = Instance.new("TextBox")
+keyInput.Name = "KeyInput"
+keyInput.Size = UDim2.new(0, 360, 0, 45)
+keyInput.Position = UDim2.new(0.5, 0, 0, 145)
+keyInput.AnchorPoint = Vector2.new(0.5, 0)
+keyInput.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
+keyInput.BorderSizePixel = 0
+keyInput.Text = ""
+keyInput.PlaceholderText = "Enter Key Here..."
+keyInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+keyInput.PlaceholderColor3 = Color3.fromRGB(100, 100, 110)
+keyInput.Font = Enum.Font.Gotham
+keyInput.TextSize = 16
+keyInput.Parent = mainFrame
+
+local inputCorner = Instance.new("UICorner")
+inputCorner.CornerRadius = UDim.new(0, 8)
+inputCorner.Parent = keyInput
+
+-- Copy Link Button
+local copyButton = Instance.new("TextButton")
+copyButton.Name = "CopyButton"
+copyButton.Size = UDim2.new(0, 360, 0, 45)
+copyButton.Position = UDim2.new(0.5, 0, 0, 205)
+copyButton.AnchorPoint = Vector2.new(0.5, 0)
+copyButton.BackgroundColor3 = Color3.fromRGB(88, 101, 242) -- Discord Blue
+copyButton.BorderSizePixel = 0
+copyButton.Text = "Copy Discord Link"
+copyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+copyButton.Font = Enum.Font.GothamBold
+copyButton.TextSize = 16
+copyButton.Parent = mainFrame
+
+local buttonCorner = Instance.new("UICorner")
+buttonCorner.CornerRadius = UDim.new(0, 8)
+buttonCorner.Parent = copyButton
+
+-- Functionality: Copy Link on Click
+local discordLink = "https://discord.gg/dzh5YTmNZb"
+
+copyButton.MouseButton1Click:Connect(function()
+    if setclipboard then
+        setclipboard(discordLink)
+    elseif toclipboard then
+        toclipboard(discordLink)
+    end
+    
+    -- Visual Feedback
+    copyButton.Text = "Link Copied!"
+    copyButton.BackgroundColor3 = Color3.fromRGB(67, 181, 129) -- Green
+    
+    task.wait(2)
+    
+    copyButton.Text = "Copy Discord Link"
+    copyButton.BackgroundColor3 = Color3.fromRGB(88, 101, 242) -- Back to Discord Blue
+end)
+
+-- Anti-Bypass: If they try to delete the frame, they get kicked
+mainFrame.Destroying:Connect(function()
+    LocalPlayer:Kick("Don't try to bypass the key system!")
+end)
